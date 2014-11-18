@@ -20,7 +20,6 @@ Wants=dlt.service
 
 [Service]
 Type=simple
-User=@DLT_USER@
 ExecStart=@CMAKE_INSTALL_PREFIX@/bin/dlt-system
 WatchdogSec=@DLT_WatchdogSec@
 NotifyAccess=main
