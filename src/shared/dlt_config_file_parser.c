@@ -428,14 +428,14 @@ DltConfigFile *dlt_config_file_init(char *file_name)
 {
     DltConfigFile *file;
     FILE *hdl = NULL;
-
+    dlt_log(LOG_DEBUG, "[%s:%d] sangjo", __func__, __LINE__);
     if ((file_name == NULL) || (strlen(file_name) >= DLT_CONFIG_FILE_PATH_MAX_LEN)) {
         dlt_log(LOG_ERR, "Given configuration file invalid\n");
         return NULL;
     }
 
     file = calloc(sizeof(DltConfigFile), 1);
-
+    dlt_log(LOG_DEBUG, "[%s:%d] sangjo", __func__, __LINE__);
     if (file == NULL) {
         dlt_log(LOG_ERR, "Setup internal data structure to parse config file failed\n");
         return NULL;

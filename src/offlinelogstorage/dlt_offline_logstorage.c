@@ -1374,7 +1374,7 @@ DLT_STATIC int dlt_logstorage_get_filter_value(DltConfigFile *config_file,
 
     if ((config_file == NULL) || (sec_name == NULL))
         return DLT_OFFLINE_LOGSTORAGE_FILTER_ERROR;
-
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo sec_name = %s", __func__, __LINE__, sec_name);
     /* Branch based on section name, no complete string compare needed */
     if (strncmp(sec_name,
                 DLT_OFFLINE_LOGSTORAGE_CONFIG_SECTION,
@@ -1436,7 +1436,7 @@ DLT_STATIC int dlt_daemon_offline_setup_filter_properties(DltLogStorage *handle,
     char value[DLT_CONFIG_FILE_ENTRY_MAX_LEN + 1] = { '\0' };
     int i = 0;
     int ret = 0;
-
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo sec_name = %s", __func__, __LINE__, sec_name);
     if ((handle == NULL) || (config_file == NULL) || (sec_name == NULL))
         return DLT_OFFLINE_LOGSTORAGE_STORE_FILTER_ERROR;
 
@@ -1446,7 +1446,7 @@ DLT_STATIC int dlt_daemon_offline_setup_filter_properties(DltLogStorage *handle,
 
     for (i = 0; i < DLT_LOGSTORAGE_FILTER_CONF_COUNT; i++) {
         ret = dlt_logstorage_get_filter_value(config_file, sec_name, i, value);
-
+        dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo dlt_logstorage_filter_conf_counter = %d", __func__, __LINE__, i);
         if (ret == DLT_OFFLINE_LOGSTORAGE_FILTER_ERROR)
             return ret;
 
@@ -1637,6 +1637,7 @@ DLT_STATIC int dlt_daemon_setup_general_properties(DltLogStorage *handle,
 DLT_STATIC int dlt_logstorage_store_filters(DltLogStorage *handle,
                                             char *config_file_name)
 {
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo", __func__, __LINE__);
     DltConfigFile *config = NULL;
     int sec = 0;
     int num_sec = 0;
@@ -1649,20 +1650,19 @@ DLT_STATIC int dlt_logstorage_store_filters(DltLogStorage *handle,
         dlt_vlog(LOG_ERR, "%s unexpected parameter received\n", __func__);
         return -1;
     }
-
     config = dlt_config_file_init(config_file_name);
 
     if (config == NULL) {
         dlt_log(LOG_CRIT, "Failed to open filter configuration file\n");
         return -1;
     }
-
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo", __func__, __LINE__);
     handle->maintain_logstorage_loglevel = DLT_MAINTAIN_LOGSTORAGE_LOGLEVEL_UNDEF;
     dlt_config_file_get_num_sections(config, &num_sec);
-
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo num_sec = %d", __func__, __LINE__, num_sec);
     for (sec = 0; sec < num_sec; sec++) {
         char sec_name[DLT_CONFIG_FILE_ENTRY_MAX_LEN + 1];
-
+        dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo sec = %d", __func__, __LINE__, sec);
         if (dlt_config_file_get_section_name(config, sec, sec_name) == -1) {
             dlt_log(LOG_CRIT, "Failed to read section name\n");
             dlt_config_file_release(config);
@@ -1678,6 +1678,7 @@ DLT_STATIC int dlt_logstorage_store_filters(DltLogStorage *handle,
         }
         else if (dlt_logstorage_validate_filter_name(sec_name) == 0)
         {
+            dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo sec_name = %s", __func__, __LINE__, sec_name);
             ret = dlt_daemon_offline_setup_filter_properties(handle, config, sec_name);
 
             if (ret == DLT_OFFLINE_LOGSTORAGE_STORE_FILTER_ERROR) {
@@ -1748,6 +1749,7 @@ DLT_STATIC int dlt_logstorage_load_config(DltLogStorage *handle)
                 "Creating configuration file path string failed\n");
         return -1;
     }
+    dlt_vlog(LOG_DEBUG, "[%s:%d] sangjo", __func__, __LINE__);
     config_file_name[PATH_MAX - 1] = 0;
     ret = dlt_logstorage_store_filters(handle, config_file_name);
 
